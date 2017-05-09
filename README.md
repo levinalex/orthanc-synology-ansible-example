@@ -118,10 +118,10 @@ If you have lua scripts, put them in `synology-orthanc/files/lua-scripts/` and a
 The configuration file is uploaded with these ansible steps:
 
 ```yaml
-- name: Upload Orthanc configuration {{ orthanc_name }}
+- name: Upload Orthanc configuration
   template: src=orthanc.json.j2 dest={{ orthanc_basedir }}/conf/orthanc.json
 
-- name: Upload orthanc scripts for {{ orthanc_name }}
+- name: Upload orthanc scripts
   synchronize:
     src: orthanc-scripts/
     dest: '{{ orthanc_basedir }}/conf/scripts/'
@@ -129,7 +129,7 @@ The configuration file is uploaded with these ansible steps:
     rsync_path: "rsync"
     delete: yes
   notify:
-  -  Restart orthanc docker container {{ orthanc_name }}
+  -  Restart orthanc docker container
 ```
 
 
