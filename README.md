@@ -1,0 +1,1 @@
+# orthanc-synology-ansible-example
