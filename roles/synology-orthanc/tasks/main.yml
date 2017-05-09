@@ -20,6 +20,20 @@
     state: directory
     mode: 0700
 
+- name: Upload Orthanc configuration {{ orthanc_name }}
+  template: src=orthanc.json.j2 dest={{ orthanc_basedir }}/conf/orthanc.json
+
+- name: Upload orthanc scripts for {{ orthanc_name }}
+  synchronize:
+    src: orthanc-scripts/
+    dest: '{{ orthanc_basedir }}/conf/scripts/'
+    recursive: yes
+    rsync_path: "rsync"
+    delete: yes
+  notify:
+  -  Restart orthanc docker container {{ orthanc_name }}
+
+
 
 - name: Start docker container {{ orthanc_name }}-postgres
   become: yes
@@ -34,19 +48,6 @@
       POSTGRES_PASSWORD: '{{ orthanc_pg_password }}'
     volumes:
       - '{{ orthanc_basedir}}/db:/var/lib/postgresql/data/pgdata'
-
-- name: Upload Orthanc configuration {{ orthanc_name }}
-  template: src=orthanc.json.j2 dest={{ orthanc_basedir }}/conf/orthanc.json
-
-- name: Upload orthanc scripts for {{ orthanc_name }}
-  synchronize:
-    src: orthanc-scripts/
-    dest: '{{ orthanc_basedir }}/conf/scripts/'
-    recursive: yes
-    rsync_path: "rsync"
-    delete: yes
-  notify:
-  -  Restart orthanc docker container {{ orthanc_name }}
 
 
 - name: Orthanc docker container {{ orthanc_name }}
