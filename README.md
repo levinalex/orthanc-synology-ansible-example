@@ -5,7 +5,7 @@ This is an example [ansible](http://docs.ansible.com/ansible/) playbook to set r
 ### Prerequisites
 
   * ansible (I am using ansible version 2.3.0, installed with pip)
-  * a Synology NAS that can run Docker (I am running this on a DS 1813+)
+  * a Synology NAS [that can run Docker](https://www.synology.com/en-us/dsm/app_packages/Docker) (I am running this on a DS 1813+)
 
 On your DiskStation, you need to create a user `ansible` with a strong password and enable SSH. (Terminal & SNMP in Control Panel).
 Add that password and the IP address of your DiskStation to the `hosts` file.
