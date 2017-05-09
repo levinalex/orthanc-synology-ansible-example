@@ -1,0 +1,7 @@
+---
+- hosts: synology
+  roles:
+    - role: synology-orthanc
+      orthanc_basedir: /volume1/docker/orthanc
+      orthanc_pg_password: FIXME_a_strong_password
+      synology_ansible_ssh_key: "ssh-rsa abcdef me@example"

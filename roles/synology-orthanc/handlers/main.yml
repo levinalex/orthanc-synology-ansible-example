@@ -1,0 +1,7 @@
+---
+- name: Restart orthanc docker container {{ orthanc_name }}
+  docker_container:
+    name: '{{ orthanc_name }}'
+    state: started
+    restart: yes
+

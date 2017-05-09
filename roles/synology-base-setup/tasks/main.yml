@@ -1,0 +1,30 @@
+---
+- name: Enable SSH Key Login for 'ansible' User
+  become: yes
+  authorized_key:
+    user: ansible
+    key: '{{ synology_ansible_ssh_key }}'
+
+- name: check for pip
+  shell: which pip
+  changed_when: false
+  failed_when: false
+  register: pip_installed
+
+- name: Download pip installer
+  become: yes
+  get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: /tmp/get-pip.py
+  when: pip_installed.rc != 0
+
+- name: Install pip
+  become: yes
+  command: python /tmp/get-pip.py
+  when: pip_installed.rc != 0
+
+- name: Install pip dependencies
+  become: yes
+  pip: name={{ item }}
+  with_items:
+    - docker-py

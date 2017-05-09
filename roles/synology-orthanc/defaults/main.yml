@@ -1,0 +1,4 @@
+orthanc_http_port: 8042
+orthanc_dicom_port: 4242
+orthanc_name: orthanc
+

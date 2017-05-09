@@ -1,0 +1,68 @@
+- name: Create orthanc directories
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: ansible
+    mode: 0755
+  with_items:
+    - '{{ orthanc_basedir }}'
+    - '{{ orthanc_basedir }}/conf'
+    - '{{ orthanc_basedir }}/storage'
+    - '{{ orthanc_basedir }}/index'
+
+- name: Create orthanc database directory
+  become: yes
+  file:
+    path: '{{ orthanc_basedir }}/db'
+    owner: 999
+    group: 999
+    state: directory
+    mode: 0700
+
+
+- name: Start docker container {{ orthanc_name }}-postgres
+  become: yes
+  docker_container:
+    name: '{{ orthanc_name }}-postgres'
+    image: 'postgres:9.6.2'
+    restart_policy: always
+    env:
+      TZ: UTC
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_USER: orthanc
+      POSTGRES_PASSWORD: '{{ orthanc_pg_password }}'
+    volumes:
+      - '{{ orthanc_basedir}}/db:/var/lib/postgresql/data/pgdata'
+
+- name: Upload Orthanc configuration {{ orthanc_name }}
+  template: src=orthanc.json.j2 dest={{ orthanc_basedir }}/conf/orthanc.json
+
+- name: Upload orthanc scripts for {{ orthanc_name }}
+  synchronize:
+    src: orthanc-scripts/
+    dest: '{{ orthanc_basedir }}/conf/scripts/'
+    recursive: yes
+    rsync_path: "rsync"
+    delete: yes
+  notify:
+  -  Restart orthanc docker container {{ orthanc_name }}
+
+
+- name: Orthanc docker container {{ orthanc_name }}
+  become: yes
+  docker_container:
+    name: '{{ orthanc_name }}'
+    image: jodogne/orthanc-plugins:1.2.0
+    command: '/etc/orthanc'
+    restart_policy: always
+    ports:
+      - '{{ orthanc_dicom_port }}:4242'
+      - '{{ orthanc_http_port }}:8042'
+    links:
+      - '{{ orthanc_name }}-postgres:{{ orthanc_name }}-postgres'
+    volumes:
+      - '{{ orthanc_basedir }}/storage:/var/lib/orthanc/storage'
+      - '{{ orthanc_basedir }}/index:/var/lib/orthanc/index'
+      - '{{ orthanc_basedir }}/conf/orthanc.json:/etc/orthanc/orthanc.json:ro'
+      - '{{ orthanc_basedir }}/conf/scripts:/etc/orthanc/scripts:ro'

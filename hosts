@@ -1,0 +1,1 @@
+synology ansible_host=SYNOLOGY_IP ansible_user=ansible ansible_connection=ssh ansible_become_pass=SYNOLOGY_ANSIBLE_USER_PASSWORD ansible_port=22
