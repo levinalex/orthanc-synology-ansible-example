@@ -38,7 +38,7 @@ The first thing this playbook does is enable SSH key based authentication on the
     key: '{{ synology_ansible_ssh_key }}'
 ```
 
-Then, because the `docker_container` [ansible module](https://docs.ansible.com/ansible/docker_container_module.html) needs the `docker-py` python package, the playbook installs pip:
+Then, because the [`docker_container` ansible module](https://docs.ansible.com/ansible/docker_container_module.html) needs the `docker-py` python package, the playbook installs pip:
 
 ```yaml
 - name: check for pip
