@@ -66,7 +66,7 @@ Then, because the [`docker_container` ansible module](https://docs.ansible.com/a
     - docker-py
 ```
 
-#### Create Directories and upload Orthanc configuration
+#### Create Directories
 
 The next steps create the necessary directories. The postgres data directory expects special permissions:
 
@@ -94,9 +94,11 @@ The next steps create the necessary directories. The postgres data directory exp
     mode: 0700
 ```
 
-The next steps are for uploading the Orthanc configuration.
+#### Upload Orthanc Configuration
 
 The orthanc configuration (`synology-orthanc/templates/orthanc.json.j2`) has the PostgreSQL plugin enabled and the postgres server host is set to the postgres container.
+
+If you have lua scripts, put them in `synology-orthanc/files/lua-scripts/` and add them to the configuration.
 
 
 ```json
@@ -112,8 +114,6 @@ The orthanc configuration (`synology-orthanc/templates/orthanc.json.j2`) has the
   }
 }
 ```
-
-If you have lua scripts, put them in `synology-orthanc/files/lua-scripts/` and add them to the configuration.
 
 The configuration file is uploaded with these ansible steps:
 
@@ -131,6 +131,7 @@ The configuration file is uploaded with these ansible steps:
   notify:
   -  Restart orthanc docker container {{ orthanc_name }}
 ```
+
 
 #### Start Postgres and Orthanc Docker Images
 
