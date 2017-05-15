@@ -96,9 +96,9 @@ The next steps create the necessary directories. The postgres data directory exp
 
 #### Upload Orthanc Configuration
 
-The orthanc configuration (`synology-orthanc/templates/orthanc.json.j2`) has the PostgreSQL plugin enabled and the postgres server host is set to the postgres container.
+The orthanc configuration ([`synology-orthanc/templates/orthanc.json.j2`](roles/synology-orthanc/templates/orthanc.json.j2)) has the PostgreSQL plugin enabled and the postgres server host is set to the postgres container.
 
-If you have lua scripts, put them in `synology-orthanc/files/lua-scripts/` and add them to the configuration.
+If you have lua scripts, put them in [`synology-orthanc/files/lua-scripts/`](roles/synology-orthanc/files/lua-scripts) and add them to the configuration.
 
 
 ```json
