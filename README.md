@@ -16,8 +16,8 @@ After that, ansible should be able to connect to your NAS. You can verify with `
 
 Before running the playbook, you need to change the default passwords:
 
-  * Edit `site.yml` to add your SSH public key and to set a strong password for your database.
-  * Edit `synology-orthanc/templates/orthanc.json.j2` to configure Orthanc. You should change the default password for the web interface.
+  * Edit [`site.yml`](site.yml) to add your SSH public key and to set a strong password for your database.
+  * Edit [`synology-orthanc/templates/orthanc.json.j2`](roles/synology-orthanc/templates/orthanc.json.j2) to configure Orthanc. You should change the default password for the web interface.
 
 
 Running ansible-playbook with `ansible-playbook site.yml` should install and run Orthanc on your NAS.  You should be able to connect via `http://your_synology_ip:8042`.
